@@ -30,7 +30,7 @@ export default function CreateUser() {
                 placeholder='Nome'
                 value={nome}
                 onChangeText={setNome}
-            /> 
+            /> jj
 
             <TextInput
                 style={styles.input}

@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="CreateUser"//Abrir a pagina inicial
+            <Stack.Navigator initialRouteName="CreateUser"//Abrir a pagina inicial -- rene
                 screenOptions={{
                     headerTitleAlign: 'center',
                     headerTintColor: '#FFF',

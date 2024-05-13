@@ -5,24 +5,47 @@ import React, {useState} from 'react'
 import styles from './style'
 
 export default function Login({ navigation }) {
-    let errorLogin = null
+    
 
+    let errorCustom;
+
+    const [errorLogin, setErrorLogin] = useState(null) 
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+
+    function entrar() {
+        if (email == "") {
+            setErrorLogin("Informe seu e-mail.")
+        } else if (senha == "") {
+            setErrorLogin("Informe sua senha.")
+        } else {
+            setErrorLogin(null);
+            logarUsuario();
+        }
+    }
 
     function logarUsuario() {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, senha)
             .then((userCredential) => {
-                // Signed in 
                 const user = userCredential.user;
                navigation.navigate('Tabs')
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(error.message)
-            });
+                if(errorCode == 'auth/invalid-email') {
+                    errorCustom = 'Endereço e-mail inválido'
+                } else if(errorCode == 'auth/invalid-credential') {
+                    errorCustom = 'E-mail ou senha incorreta'
+                } else {
+                    errorCustom = 'Não foi possível fazer login ,tente novamente!'
+                }
+                setErrorLogin(errorCustom);
+            }
+            );
+
+            
 
     }
 
@@ -30,9 +53,7 @@ export default function Login({ navigation }) {
         <View style={styles.container}>
             <Image style={styles.logo} source={require('../../../assets/logo_pra_fazer.png')} />
 
-            {errorLogin != null && (
-                <Text style={styles.alert}>{errorLogin}</Text>
-            )}
+            <Text style={styles.alert}>{errorLogin}</Text>
 
             <TextInput
                 style={styles.input}
@@ -44,9 +65,10 @@ export default function Login({ navigation }) {
                 style={styles.input}
                 placeholder='Senha'
                 onChangeText={setSenha}
+                secureTextEntry={true} 
             />
 
-            <TouchableOpacity onPress={logarUsuario} style={styles.button}>
+            <TouchableOpacity onPress={entrar} style={styles.button}>
                 <Text style={styles.textButton}>Entrar</Text>
             </TouchableOpacity>
 
